@@ -39,6 +39,15 @@ static CGFloat const kLimitLabWidth = 60.f;
     return self;
 }
 
+- (void)layoutSubviews {
+    [super layoutSubviews];
+    if (self.limitLab.hidden) return;
+    CGRect frame = self.limitLab.frame;
+    frame.origin.y = self.frame.size.height-kDefaultFont-kLimitLabMargin;
+    if (self.contentOffset.y > 0) frame.origin.y = (self.frame.size.height+self.contentOffset.y) - (kDefaultFont+kLimitLabMargin);
+    self.limitLab.frame = frame;
+}
+
 - (void)initPlaceholderLabelWithFrame:(CGRect)frame {
     self.placeHolderLab.frame = CGRectMake(4, 8, frame.size.width-8, kDefaultFont);
     [self addSubview:self.placeHolderLab];
