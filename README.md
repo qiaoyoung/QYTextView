@@ -50,6 +50,7 @@ textView.limitNumber = 100;
 textView.limitFont = [UIFont systemFontOfSize:14];
 [self.view addSubview:textView];
 ```               
+![效果图](https://github.com/qiaoyoung/QYTextView/blob/master/%E6%95%88%E6%9E%9C%E5%9B%BE.png)
 
 ## Requirements
 
