@@ -27,14 +27,14 @@ static CGFloat const kLimitLabWidth = 60.f;
 - (instancetype)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
-        [self initPlaceholderLabelWithFrame:frame];
+        [self qy_initPlaceholderLabelWithFrame:frame];
     }
     return self;
 }
 
 - (instancetype)init {
     if (self == [super init]) {
-        [self initPlaceholderLabelWithFrame:CGRectZero];
+        [self qy_initPlaceholderLabelWithFrame:CGRectZero];
     }
     return self;
 }
@@ -48,10 +48,9 @@ static CGFloat const kLimitLabWidth = 60.f;
     self.limitLab.frame = frame;
 }
 
-- (void)initPlaceholderLabelWithFrame:(CGRect)frame {
+- (void)qy_initPlaceholderLabelWithFrame:(CGRect)frame {
     self.placeHolderLab.frame = CGRectMake(4, 8, frame.size.width-8, kDefaultFont);
     [self addSubview:self.placeHolderLab];
-    [self sendSubviewToBack:self.placeHolderLab];
     self.limitLab.frame = CGRectMake(frame.size.width-kLimitLabWidth-kLimitLabMargin,
                                      frame.size.height-kDefaultFont-kLimitLabMargin,
                                      kLimitLabWidth,
@@ -59,15 +58,15 @@ static CGFloat const kLimitLabWidth = 60.f;
     [self addSubview:self.limitLab];
     
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self
-                                                                          action:@selector(tapAction)];
+                                                                          action:@selector(qy_tapAction)];
     [self.placeHolderLab addGestureRecognizer:tap];
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(textDidChange)
+                                             selector:@selector(qy_textDidChange)
                                                  name:UITextViewTextDidChangeNotification
                                                object:nil];
 }
 
-- (void)setup_placeholderLabelFrame {
+- (void)qy_setupPlaceholderLabelFrame {
     if (self.font.pointSize == 0) return;
     CGRect frame = _placeHolderLab.frame;
     CGSize size = [_placeHolderLab sizeThatFits:CGSizeMake(_placeHolderLab.frame.size.width, CGFLOAT_MAX)];
@@ -77,12 +76,12 @@ static CGFloat const kLimitLabWidth = 60.f;
     _placeHolderLab.frame = frame;
 }
 
-#pragma mark - event
-- (void)tapAction {
+#pragma mark - Event
+- (void)qy_tapAction {
     if (self.superview) [self becomeFirstResponder];
 }
 
-- (void)textDidChange {
+- (void)qy_textDidChange {
     if (self.text.length > 0) {
         _placeHolderLab.hidden = YES;
     } else {
@@ -93,12 +92,12 @@ static CGFloat const kLimitLabWidth = 60.f;
     self.limitLab.text = [NSString stringWithFormat:@"%lu/%lu",(unsigned long)self.text.length,(unsigned long)self.limitLab.tag];
 }
 
-#pragma mark - QYTextView setter
+#pragma mark - QYTextView Setter
 - (void)setFrame:(CGRect)frame {
     [super setFrame:frame];
     if (frame.size.height < kDefaultFont) return;
     self.placeHolderLab.frame = CGRectMake(4, 8, frame.size.width-8, kDefaultFont);
-    [self setup_placeholderLabelFrame];
+    [self qy_setupPlaceholderLabelFrame];
     self.limitLab.frame = CGRectMake(frame.size.width-kLimitLabWidth-kLimitLabMargin,
                                      frame.size.height-kDefaultFont-kLimitLabMargin,
                                      kLimitLabWidth,
@@ -106,23 +105,31 @@ static CGFloat const kLimitLabWidth = 60.f;
 }
 - (void)setFont:(UIFont *)font {
     [super setFont:font];
-    [self setup_placeholderLabelFrame];
+    [self qy_setupPlaceholderLabelFrame];
+}
+- (void)setText:(NSString *)text {
+    [super setText:text];
+    if (text.length > 0) {
+        _placeHolderLab.hidden = YES;
+    } else {
+        _placeHolderLab.hidden = NO;
+    }
 }
 
-#pragma mark - placeHolderLab setter
+#pragma mark - PlaceHolderLab Setter
 - (void)setPlaceholder:(NSString *)placeholder {
     if (_placeHolderLab.text != placeholder) _placeHolderLab.text = placeholder;
-    [self setup_placeholderLabelFrame];
+    [self qy_setupPlaceholderLabelFrame];
 }
 - (void)setPlaceholderColor:(UIColor *)placeholderColor {
     if (_placeHolderLab.textColor != placeholderColor) _placeHolderLab.textColor = placeholderColor;
 }
 - (void)setPlaceholderFont:(UIFont *)placeholderFont {
     if (_placeHolderLab.font != placeholderFont) _placeHolderLab.font = placeholderFont;
-    [self setup_placeholderLabelFrame];
+    [self qy_setupPlaceholderLabelFrame];
 }
 
-#pragma mark - limitLab setter
+#pragma mark - LimitLab Setter
 - (void)setLimitNumber:(NSUInteger)limitNumber {
     if (!limitNumber) return;
     _limitLab.text = [NSString stringWithFormat:@"0/%lu",(unsigned long)limitNumber];
@@ -140,7 +147,7 @@ static CGFloat const kLimitLabWidth = 60.f;
     _limitLab.frame = frame;
 }
 
-#pragma mark - getter
+#pragma mark - Getter
 - (UILabel *)placeHolderLab {
     if (!_placeHolderLab) {
         _placeHolderLab = [[UILabel alloc] init];
