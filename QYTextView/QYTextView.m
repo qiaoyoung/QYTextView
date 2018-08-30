@@ -26,16 +26,12 @@ static CGFloat const kLimitLabWidth = 60.f;
 
 - (instancetype)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
-    if (self) {
-        [self qy_initPlaceholderLabelWithFrame:frame];
-    }
+    if (self) [self qy_initPlaceholderLabelWithFrame:frame];
     return self;
 }
 
 - (instancetype)init {
-    if (self == [super init]) {
-        [self qy_initPlaceholderLabelWithFrame:CGRectZero];
-    }
+    if (self == [super init]) [self qy_initPlaceholderLabelWithFrame:CGRectZero];
     return self;
 }
 
@@ -51,6 +47,7 @@ static CGFloat const kLimitLabWidth = 60.f;
 - (void)qy_initPlaceholderLabelWithFrame:(CGRect)frame {
     self.placeHolderLab.frame = CGRectMake(4, 8, frame.size.width-8, kDefaultFont);
     [self addSubview:self.placeHolderLab];
+    [self sendSubviewToBack:self.placeHolderLab];
     self.limitLab.frame = CGRectMake(frame.size.width-kLimitLabWidth-kLimitLabMargin,
                                      frame.size.height-kDefaultFont-kLimitLabMargin,
                                      kLimitLabWidth,
@@ -80,7 +77,6 @@ static CGFloat const kLimitLabWidth = 60.f;
 - (void)qy_tapAction {
     if (self.superview) [self becomeFirstResponder];
 }
-
 - (void)qy_textDidChange {
     if (self.text.length > 0) {
         _placeHolderLab.hidden = YES;
