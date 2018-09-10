@@ -104,12 +104,14 @@ static CGFloat const kLimitLabWidth = 60.f;
     [self qy_setupPlaceholderLabelFrame];
 }
 - (void)setText:(NSString *)text {
-    [super setText:text];
     if (text.length > 0) {
         _placeHolderLab.hidden = YES;
     } else {
         _placeHolderLab.hidden = NO;
     }
+    if (text.length > self.limitLab.tag) text = [text substringToIndex:self.limitLab.tag];
+    self.limitLab.text = [NSString stringWithFormat:@"%lu/%lu",(unsigned long)text.length,(unsigned long)self.limitLab.tag];
+    [super setText:text];
 }
 
 #pragma mark - PlaceHolderLab Setter
