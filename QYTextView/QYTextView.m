@@ -109,7 +109,6 @@ static CGFloat const kLimitLabWidth = 60.f;
     } else {
         _placeHolderLab.hidden = NO;
     }
-    if (self.limitLab.hidden) return;
     if (text.length > self.limitLab.tag) text = [text substringToIndex:self.limitLab.tag];
     self.limitLab.text = [NSString stringWithFormat:@"%lu/%lu",(unsigned long)text.length,(unsigned long)self.limitLab.tag];
     [super setText:text];
